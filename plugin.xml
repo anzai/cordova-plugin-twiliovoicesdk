@@ -42,6 +42,7 @@
         <config-file target="AndroidManifest.xml" parent="/manifest/application">
             <!-- [START fcm_listener] -->
             <service
+                android:exported="true"
                 android:name="com.phonegap.plugins.twiliovoice.fcm.VoiceFirebaseMessagingService">
                 <intent-filter>
                     <action android:name="com.google.firebase.MESSAGING_EVENT" />
