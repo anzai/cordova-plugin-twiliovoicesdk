@@ -1,94 +1,85 @@
-(function() {
-    var delegate = {}
-    var TwilioPlugin = {
+var exec = require("cordova/exec")
+var delegate = {}
 
-        TwilioVoiceClient: function() {
-            return this;
-        }
+function TwilioVoiceClient() {
+    return this;
+}
+
+TwilioVoiceClient.call = function(token, params) {
+    exec(null, null, "TwilioVoicePlugin", "call", [token, params]);
+}
+
+TwilioVoiceClient.sendDigits = function(digits) {
+    exec(null, null, "TwilioVoicePlugin", "sendDigits", [digits]);
+}
+
+TwilioVoiceClient.disconnect = function() {
+    exec(null, null, "TwilioVoicePlugin", "disconnect", null);
+}
+
+TwilioVoiceClient.rejectCallInvite = function() {
+    exec(null, null, "TwilioVoicePlugin", "rejectCallInvite", null);
+}
+
+TwilioVoiceClient.acceptCallInvite = function() {
+    exec(null, null, "TwilioVoicePlugin", "acceptCallInvite", null);
+}
+
+TwilioVoiceClient.setSpeaker = function(mode) {
+    // "on" or "off"
+    exec(null, null, "TwilioVoicePlugin", "setSpeaker", [mode]);
+}
+
+TwilioVoiceClient.muteCall = function() {
+    exec(null, null, "TwilioVoicePlugin", "muteCall", null);
+}
+
+TwilioVoiceClient.unmuteCall = function() {
+    exec(null, null, "TwilioVoicePlugin", "unmuteCall", null);
+}
+
+TwilioVoiceClient.isCallMuted = function(fn) {
+    exec(fn, null, "TwilioVoicePlugin", "isCallMuted", null);
+}
+
+TwilioVoiceClient.initialize = function(token) {
+
+    var error = function(error) {
+        //TODO: Handle errors here
+        if(delegate['onerror']) delegate['onerror'](error)
     }
 
-    TwilioPlugin.TwilioVoiceClient.prototype.call = function(token, params) {
-        Cordova.exec(null,null,"TwilioVoicePlugin","call",[token, params]);
-    }
-
-    TwilioPlugin.TwilioVoiceClient.prototype.sendDigits = function(digits) {
-        Cordova.exec(null,null,"TwilioVoicePlugin","sendDigits",[digits]);
-    }
-
-    TwilioPlugin.TwilioVoiceClient.prototype.disconnect = function() {
-        Cordova.exec(null,null,"TwilioVoicePlugin","disconnect",null);
-    }
-
-    TwilioPlugin.TwilioVoiceClient.prototype.rejectCallInvite = function() {
-        Cordova.exec(null,null,"TwilioVoicePlugin","rejectCallInvite",null);
-    }
-
-    TwilioPlugin.TwilioVoiceClient.prototype.acceptCallInvite = function() {
-        Cordova.exec(null,null,"TwilioVoicePlugin","acceptCallInvite",null);
-    }
-
-    TwilioPlugin.TwilioVoiceClient.prototype.setSpeaker = function(mode) {
-        // "on" or "off"        
-        Cordova.exec(null, null, "TwilioVoicePlugin", "setSpeaker", [mode]);
-    }
-
-    TwilioPlugin.TwilioVoiceClient.prototype.muteCall = function() {
-        Cordova.exec(null, null, "TwilioVoicePlugin", "muteCall", null);
-    }
-
-    TwilioPlugin.TwilioVoiceClient.prototype.unmuteCall = function() {
-        Cordova.exec(null, null, "TwilioVoicePlugin", "unmuteCall", null);
-    }
-
-    TwilioPlugin.TwilioVoiceClient.prototype.isCallMuted = function(fn) {
-        Cordova.exec(fn, null, "TwilioVoicePlugin", "isCallMuted", null);
-    }
-
-    TwilioPlugin.TwilioVoiceClient.prototype.initialize = function(token) {
-
-        var error = function(error) {
-            //TODO: Handle errors here
-            if(delegate['onerror']) delegate['onerror'](error)
-        }
-
-        var success = function(callback) {
-            var argument = callback['arguments'];
-            if (delegate[callback['callback']]) delegate[callback['callback']](argument);
-        }
-
-
-        Cordova.exec(success,error,"TwilioVoicePlugin","initializeWithAccessToken",[token]);
-    }
-
-    TwilioPlugin.TwilioVoiceClient.prototype.error = function(fn) {
-        delegate['onerror'] = fn;
-    }
-
-    TwilioPlugin.TwilioVoiceClient.prototype.clientinitialized = function(fn) {
-        delegate['onclientinitialized'] = fn;
+    var success = function(callback) {
+        var argument = callback['arguments'];
+        if (delegate[callback['callback']]) delegate[callback['callback']](argument);
     }
 
 
-    TwilioPlugin.TwilioVoiceClient.prototype.callinvitereceived = function(fn) {
-        delegate['oncallinvitereceived'] = fn;
-    }
+    exec(success, error, "TwilioVoicePlugin", "initializeWithAccessToken", [token]);
+}
 
-    TwilioPlugin.TwilioVoiceClient.prototype.callinvitecanceled = function(fn) {
-        delegate['oncallinvitecanceled'] = fn;
-    }
+TwilioVoiceClient.error = function(fn) {
+    delegate['onerror'] = fn;
+}
 
-    TwilioPlugin.TwilioVoiceClient.prototype.calldidconnect = function(fn) {
-        delegate['oncalldidconnect'] = fn;
-    }
+TwilioVoiceClient.clientinitialized = function(fn) {
+    delegate['onclientinitialized'] = fn;
+}
 
-    TwilioPlugin.TwilioVoiceClient.prototype.calldiddisconnect = function(fn) {
-        delegate['oncalldiddisconnect'] = fn;
-    }
+TwilioVoiceClient.callinvitereceived = function(fn) {
+    delegate['oncallinvitereceived'] = fn;
+}
 
-    TwilioPlugin.install = function() {
-        if (!window.Twilio) window.Twilio = {};
-        if (!window.Twilio.TwilioVoiceClient) window.Twilio.TwilioVoiceClient = new TwilioPlugin.TwilioVoiceClient();
-    }
- TwilioPlugin.install();
+TwilioVoiceClient.callinvitecanceled = function(fn) {
+    delegate['oncallinvitecanceled'] = fn;
+}
 
-})()
+TwilioVoiceClient.calldidconnect = function(fn) {
+    delegate['oncalldidconnect'] = fn;
+}
+
+TwilioVoiceClient.calldiddisconnect = function(fn) {
+    delegate['oncalldiddisconnect'] = fn;
+}
+
+module.exports = TwilioVoiceClient;
