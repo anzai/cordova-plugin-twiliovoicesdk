@@ -101,7 +101,7 @@ public class VoiceFirebaseMessagingService extends FirebaseMessagingService {
         intent.putExtra(TwilioVoicePlugin.INCOMING_CALL_INVITE, callInvite);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         PendingIntent pendingIntent =
-                PendingIntent.getActivity(this, notificationId, intent, PendingIntent.FLAG_CANCEL_CURRENT);
+                PendingIntent.getActivity(this, notificationId, intent, PendingIntent.FLAG_IMMUTABLE);
 
         Bundle extras = new Bundle();
         extras.putInt(NOTIFICATION_ID_KEY, notificationId);

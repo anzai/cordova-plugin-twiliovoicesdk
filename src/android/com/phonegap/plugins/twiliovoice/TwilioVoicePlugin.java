@@ -52,8 +52,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import capacitor.android.plugins.R;
-
 /**
  * Twilio Voice Plugin for Cordova/PhoneGap
  * <p>
@@ -99,7 +97,7 @@ public class TwilioVoicePlugin extends CordovaPlugin {
     public static final String INCOMING_CALL_NOTIFICATION_ID = "INCOMING_CALL_NOTIFICATION_ID";
     public static final String ACTION_INCOMING_CALL = "INCOMING_CALL";
     public static final String ACTION_CANCELLED_CALL = "CANCELLED_CALL";
-    
+
     public static final String KEY_FCM_TOKEN = "FCM_TOKEN";
 
     private AudioManager audioManager;
@@ -777,7 +775,6 @@ public class TwilioVoicePlugin extends CordovaPlugin {
             DialogInterface.OnClickListener cancelClickListener) {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
         alertDialogBuilder.setCancelable(false);
-        alertDialogBuilder.setIcon(R.drawable.ic_call_black_24dp);
         alertDialogBuilder.setTitle("Incoming Call");
         alertDialogBuilder.setPositiveButton("Accept", answerCallClickListener);
         alertDialogBuilder.setNegativeButton("Reject", cancelClickListener);
